@@ -31,14 +31,13 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Download source
-      run: |
-        cd ${{ github.workspace }}/
+    - run: |
+        cd ${{ github.workspace }}
         curl -L -o godzilla-${{ inputs.ref }}.zip https://github.com/andrsd/godzilla/archive/refs/heads/${{ inputs.ref }}.zip
         unzip godzilla-${{ inputs.ref }}.zip
+      shell: bash
 
-    - name: Configure
-      run: |
+    - run: |
         mkdir -p ${{ github.workspace }}/godzilla-${{ inputs.ref }}/build
         cmake \
           -S ${{ github.workspace }}/godzilla-${{ inputs.ref }} \
@@ -48,12 +47,13 @@ runs:
           -DGODZILLA_BUILD_EXAMPLES=${{ inputs.with-examples }} \
           -DGODZILLA_BUILD_TESTS=${{ inputs.with-tests }} \
           -DGODZILLA_CODE_COVERAGE=${{ inputs.code-coverage }}
+      shell: bash
 
-    - name: Build
-      run: |
+    - run: |
         cmake --build ${{ github.workspace }}/godzilla-${{ inputs.ref }}/build
+      shell: bash
 
-    - name: Install
-      if: ${{ inputs.install-prefix != '' }}
-      run: |
+    - run: |
         cmake --install ${{ github.workspace }}/godzilla-${{ inputs.ref }}/build
+      if: ${{ inputs.install-prefix != '' }}
+      shell: bash
