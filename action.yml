@@ -1,0 +1,59 @@
+name: 'Build godzilla'
+description: 'Build godzilla library'
+
+inputs:
+  ref:
+    description: 'Name of the tag or branch to build'
+    required: false
+    default: 'main'
+  perf-log:
+    description: 'Build with performance logging'
+    required: false
+    default: 'YES'
+  install-prefix:
+    description: 'Install prefix'
+    required: false
+    default: ''
+  with-examples:
+    description: 'Build with examples'
+    required: NO
+    default: ''
+  with-tests:
+    description: 'Build with tests'
+    required: NO
+    default: ''
+  code-coverage:
+    description: 'Build with code coverage'
+    required: NO
+    default: ''
+
+
+runs:
+  using: "composite"
+  steps:
+    - name: Download source
+      run: |
+        cd ${{ github.workspace }}/
+        curl -L -o godzilla-${{ inputs.ref }}.zip https://github.com/andrsd/godzilla/archive/refs/heads/${{ inputs.ref }}.zip
+        unzip godzilla-${{ inputs.ref }}.zip
+
+    - name: Configure
+      run: |
+        mkdir -p ${{ github.workspace }}/godzilla-${{ inputs.ref }}/build
+        cmake \
+          -S ${{ github.workspace }}/godzilla-${{ inputs.ref }} \
+          -B ${{ github.workspace }}/godzilla-${{ inputs.ref }}/build \
+          -DCMAKE_INSTALL_PREFIX=${{ inputs.install-prefix }} \
+          -DGODZILLA_WITH_PERF_LOG=${{ inputs.perf-log }} \
+          -DGODZILLA_BUILD_EXAMPLES=${{ inputs.with-examples }} \
+          -DGODZILLA_BUILD_TESTS=${{ inputs.with-tests }} \
+          -DGODZILLA_CODE_COVERAGE=${{ inputs.code-coverage }}
+
+    - name: Build
+      run: |
+        cmake --build ${{ github.workspace }}/godzilla-${{ inputs.ref }}/build
+
+    - name: Install
+      if: ${{ inputs.install-prefix != '' }}
+      run: |
+        cmake --install ${{ github.workspace }}/godzilla-${{ inputs.ref }}/build
