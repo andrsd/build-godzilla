@@ -1,0 +1,55 @@
+name: test
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    defaults:
+      run:
+        shell: bash -el {0}
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Set up miniconda
+        uses: conda-incubator/setup-miniconda@v2
+        with:
+          python-version: 3.9
+          auto-update-conda: false
+          channels: andrsd,conda-forge,defaults
+          channel-priority: strict
+          miniforge-version: latest
+          miniforge-variant: Mambaforge
+          use-mamba: true
+
+      - name: Install dependencies
+        run: |
+          mamba install \
+            cmake \
+            make \
+            cxx-compiler \
+            mpich \
+            petsc==3.17.5 \
+            fmt==9.1.0 \
+            yaml-cpp=0.7.0 \
+            exodusIIcpp==1.6 \
+            lcov
+
+      - name: Checkout repository
+        uses: actions/checkout@master
+
+      - name: Build godzilla
+        uses: andrsd/build-godzilla@main
+        with:
+          ref: main
+          perf-log: NO
+          install-prefix: $CONDA_PREFIX
+          with-examples: NO
+          with-tests: NO
+          code-coverage: NO
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
