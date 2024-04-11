@@ -9,23 +9,22 @@ inputs:
   perf-log:
     description: 'Build with performance logging'
     required: false
-    default: 'YES'
+    default: 'ON'
   install-prefix:
     description: 'Install prefix'
-    required: false
-    default: ''
+    required: true
   with-examples:
     description: 'Build with examples'
-    required: NO
-    default: ''
+    required: false
+    default: 'OFF'
   with-tests:
     description: 'Build with tests'
-    required: NO
-    default: ''
+    required: false
+    default: 'OFF'
   code-coverage:
     description: 'Build with code coverage'
-    required: NO
-    default: ''
+    required: false
+    default: 'OFF'
 
 
 runs:
@@ -55,5 +54,4 @@ runs:
 
     - run: |
         cmake --install ${{ github.workspace }}/godzilla-${{ inputs.ref }}/build
-      if: ${{ inputs.install-prefix != '' }}
       shell: bash -el {0}
