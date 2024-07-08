@@ -30,9 +30,9 @@ jobs:
             make \
             cxx-compiler \
             mpich \
-            petsc==3.17.5 \
+            petsc==3.20.6 \
             fmt==9.1.0 \
-            yaml-cpp=0.7.0 \
+            yaml-cpp=0.8.0 \
             exodusIIcpp==1.6 \
             lcov
 
