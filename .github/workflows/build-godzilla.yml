@@ -33,7 +33,7 @@ jobs:
             petsc==3.20.6 \
             fmt==9.1.0 \
             yaml-cpp=0.8.0 \
-            exodusIIcpp==1.9 \
+            exodusIIcpp==2.0 \
             lcov
 
       - name: Checkout repository
