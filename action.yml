@@ -6,10 +6,6 @@ inputs:
     description: 'Name of the tag or branch to build'
     required: false
     default: 'main'
-  perf-log:
-    description: 'Build with performance logging'
-    required: false
-    default: 'ON'
   install-prefix:
     description: 'Install prefix'
     required: true
@@ -42,7 +38,6 @@ runs:
           -S ${{ github.workspace }}/godzilla-${{ inputs.ref }} \
           -B ${{ github.workspace }}/godzilla-${{ inputs.ref }}/build \
           -DCMAKE_INSTALL_PREFIX=${{ inputs.install-prefix }} \
-          -DGODZILLA_WITH_PERF_LOG=${{ inputs.perf-log }} \
           -DGODZILLA_BUILD_EXAMPLES=${{ inputs.with-examples }} \
           -DGODZILLA_BUILD_TESTS=${{ inputs.with-tests }} \
           -DGODZILLA_CODE_COVERAGE=${{ inputs.code-coverage }}
