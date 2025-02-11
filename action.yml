@@ -1,27 +1,30 @@
-name: 'Build godzilla'
-description: 'Build godzilla library'
+name: "Build godzilla"
+description: "Build godzilla library"
 
 inputs:
   ref:
-    description: 'Name of the tag or branch to build'
+    description: "Name of the tag or branch to build"
     required: false
-    default: 'main'
+    default: "main"
+  build-type:
+    description: "Build type"
+    required: false
+    default: "Release"
   install-prefix:
-    description: 'Install prefix'
+    description: "Install prefix"
     required: true
   with-examples:
-    description: 'Build with examples'
+    description: "Build with examples"
     required: false
-    default: 'OFF'
+    default: "OFF"
   with-tests:
-    description: 'Build with tests'
+    description: "Build with tests"
     required: false
-    default: 'OFF'
+    default: "OFF"
   code-coverage:
-    description: 'Build with code coverage'
+    description: "Build with code coverage"
     required: false
-    default: 'OFF'
-
+    default: "OFF"
 
 runs:
   using: "composite"
@@ -38,6 +41,7 @@ runs:
           -S ${{ github.workspace }}/godzilla-${{ inputs.ref }} \
           -B ${{ github.workspace }}/godzilla-${{ inputs.ref }}/build \
           -DCMAKE_INSTALL_PREFIX=${{ inputs.install-prefix }} \
+          -DCMAKE_BUILD_TYPE=${{ inputs.build-type }} \
           -DGODZILLA_BUILD_EXAMPLES=${{ inputs.with-examples }} \
           -DGODZILLA_BUILD_TESTS=${{ inputs.with-tests }} \
           -DGODZILLA_CODE_COVERAGE=${{ inputs.code-coverage }}
