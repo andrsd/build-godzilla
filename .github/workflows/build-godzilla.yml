@@ -24,12 +24,14 @@ jobs:
           conda install \
             cmake \
             make \
-            cxx-compiler \
             mpich \
-            petsc==3.20.6 \
+            mpich-mpicxx \
+            petsc==3.21.* \
+            h5pp=1.11.* \
             fmt==9.1.0 \
             yaml-cpp=0.8.0 \
             exodusIIcpp==2.0 \
+            mpicpp-lite=1.5.* \
             lcov
 
       - name: Checkout repository
